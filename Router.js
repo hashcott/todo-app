@@ -23,6 +23,7 @@ const AllScreen = () => {
         headerTitleStyle: {
           color: "#fff",
         },
+        headerTintColor: "#fff",
       }}
     >
       <Stack.Screen name="Home" component={Home} />
@@ -41,6 +42,7 @@ const CompletedScreen = () => {
         headerTitleStyle: {
           color: "#fff",
         },
+        headerTintColor: "#fff",
       }}
     >
       <Stack.Screen name="Completed" component={Completed} />
@@ -60,6 +62,7 @@ const ActiveScreen = () => {
         headerTitleStyle: {
           color: "#fff",
         },
+        headerTintColor: "#fff",
       }}
     >
       <Stack.Screen name="Active" component={Active} />
