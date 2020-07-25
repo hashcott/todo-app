@@ -2,76 +2,106 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AntDesign } from "@expo/vector-icons";
 import Home from "./src/Screen/Home";
+import Completed from "./src/Screen/Completed";
+import Active from "./src/Screen/Active";
+import SingleTodo from "./src/Components/SingleTodo";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const Router = () => {
-  function CustomTab({ state, descriptors, navigation }) {
-    const focusedOptions = descriptors[state.routes[state.index].key].options;
-
-    if (focusedOptions.tabBarVisible === false) {
-      return null;
-    }
-
-    return (
-      <View style={{ flexDirection: "row" }}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-              ? options.title
-              : route.name;
-
-          const isFocused = state.index === index;
-
-          const onPress = () => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          };
-
-          const onLongPress = () => {
-            navigation.emit({
-              type: "tabLongPress",
-              target: route.key,
-            });
-          };
-
-          return (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityStates={isFocused ? ["selected"] : []}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{ flex: 1 }}
-            >
-              <Text style={{ color: isFocused ? "#673ab7" : "#222" }}>
-                {label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  }
+const AllScreen = () => {
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBar={(props) => <CustomTab {...props} />}>
-        <Tab.Screen name="Home" component={Home} />
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#010920",
+        },
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="SingleTodo" component={SingleTodo} />
+    </Stack.Navigator>
+  );
+};
+const CompletedScreen = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Completed"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#010920",
+        },
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <Stack.Screen name="Completed" component={Completed} />
+      <Stack.Screen name="SingleTodo" component={SingleTodo} />
+    </Stack.Navigator>
+  );
+};
+
+const ActiveScreen = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Active"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#010920",
+        },
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <Stack.Screen name="Active" component={Active} />
+      <Stack.Screen name="SingleTodo" component={SingleTodo} />
+    </Stack.Navigator>
+  );
+};
+const Router = () => {
+  return (
+    <NavigationContainer style={styles.main}>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Home") {
+              iconName = focused ? "plussquare" : "plussquareo";
+            } else if (route.name === "Completed") {
+              iconName = focused ? "circledown" : "circledowno";
+            } else if (route.name === "Active") {
+              iconName = focused ? "codesquare" : "codesquareo";
+            }
+            // You can return any component that you like here!
+            return <AntDesign name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: "#4D7CF2",
+          inactiveTintColor: "gray",
+        }}
+      >
+        <Tab.Screen name="Completed" component={CompletedScreen} />
+        <Tab.Screen name="Home" component={AllScreen} />
+        <Tab.Screen name="Active" component={ActiveScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
-
+const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "#010920",
+  },
+});
 export default Router;

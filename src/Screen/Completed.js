@@ -1,21 +1,21 @@
 import React from "react";
 
-import { StyleSheet, View, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AddTodo from "../containers/AddTodo";
 import VisibleTodos from "../containers/VisibleTodos";
 
-const Home = (props) => {
+const Completed = (props) => {
   return (
     <View style={styles.container}>
       <AddTodo />
-      <KeyboardAvoidingView style={{ flex: 0.8 }}>
-        <VisibleTodos navigation={props.navigation} />
-      </KeyboardAvoidingView>
+      <View style={{ flex: 0.8 }}>
+        <VisibleTodos filter="COMPLETED" navigation={props.navigation} />
+      </View>
     </View>
   );
 };
 
-export default Home;
+export default Completed;
 
 const styles = StyleSheet.create({
   container: {
